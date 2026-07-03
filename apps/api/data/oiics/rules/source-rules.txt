@@ -1,0 +1,40 @@
+SOURCE AND SECONDARY SOURCE
+Source indicates the person or object that most directly produced the injury.
+Secondary Source code should reflect either 1.) The item (person, animal, object, or condition) that was responsible for initiating the chain of events (if different from Source) OR 2.) the item (person, animal, object, or condition) responsible for exacerbating the harmful event, including failure to prevent or mitigate harm.
+The same classification structure is used to classify Source and Secondary Source. Specific guidance is provided for selection of Source and Secondary source in accordance with the particular chosen Event or exposure.
+The Source/ Secondary source divisions are ordered as follows:
+Division 1 - Chemicals, hazardous materials
+Division 2 - Containers, furniture and fixtures
+Division 3 - Machines
+Division 4 - Parts and materials
+Division 5 - Animals, plants, persons, etc.
+Division 6 - Structures and surfaces
+Division 7 - Tools and equipment
+Division 8 - Vehicles
+Division 9 - Safety and environmental factors and conditions
+Note: In many incidents, there will be more than one possible item involved in the case that could meet the definitions of Source and Secondary source. In other situations, there may be additional objects that were involved that do not meet those definitions. For this reason caution should be used in interpreting source and secondary source data totals. While they reflect items or conditions with primary involvement in injuries or illness cases, they do not reflect the full count of the involvement of a particular object or condition across cases.
+RULES OF SELECTION
+1. Source and Secondary Source are determined by first assigning an Event or exposure code and then following the rules found in the "Coding interactions" column for the specific Event or exposure category. The general rules below are a supplement to the guidelines of the selected Event or exposure category. A Secondary source code should be assigned for all cases. For instances where a source or secondary source is present, but a specific code cannot be determined, select 990 - Source, secondary source unspecified.  If no item is applicable, then select code  991 - Secondary source not applicable.
+2. Whole versus part
+a)     Machines, tools, and vehicles: Code Source as the whole object, unless otherwise noted in "Coding interactions". The specific part of the vehicle, machine or structure may be coded as Secondary Source in some cases, where "Coding interactions" note that it is applicable.
+1) If the event is a fall that occurs from one part of a vehicle or machine (not in transport) to another part of that same vehicle or machine, it is acceptable to code the specific vehicle and machine parts from which and onto which the worker fell.
+2) For overexertions over a part of a machine, such as a lever or valve, code the specific part of the vehicle or machine.
+3) When a part of a vehicle, tool, or machine separates from the whole object, code the part as source and the whole object as secondary source
+b)     Buildings and structures: Source will typically be coded as the specific part (i.e. structural element) directly involved in the incident, such as a floor, window, door or stairs. General exceptions to this rule include explosions and fires and structural collapses. Refer to "Coding interactions" for specific guidance.
+c)     Containers versus contents
+When an injury or illness was produced by a filled container, name the container, not the contents, as the source unless the injury or illness was directly inflicted by the contents, such as hot liquids or chemicals. The container contents should be coded as the secondary source in Overexertion events if no other contributing factor is identified.
+3. Division 9: Safety and Environmental Factors and Conditions
+Codes from Division 9*: Safety and Environmental Factors and Conditions should be selected as the Source of injury or illness when that is the only possible source identified. More often, these codes are used as secondary sources.
+Example 1: A worker sustained multiple injuries in an earthquake.
+Event 990 - Event or exposure, unspecified
+Source 9512 - Earthquake
+Secondary Source 990 - Source, secondary source unspecified
+4. Choosing between multiple objects or conditions:
+a)     First, review the event-based rules in "Coding interactions" to ensure that the source(s) being considered are consistent with the selected event.
+b)     Select a multiple code, if available. If the two objects or conditions are in the same group and there is a multiple code available, select the “Multiple” code for that combination. Otherwise, follow the guidance below:
+c)     When the injury-producing object cannot be determined: When  an injury results from contact or exposure with two or more objects, substances, etc., either simultaneously or in rapid sequence, and it is impossible to determine which object directly produced the injury, select the source as follows:
+1)     Select moving objects over stationary objects
+Example 2: If a person is struck by a rolling vehicle and thrown against a post, name the vehicle as the source of injury.
+2)     Select the item that was contacted first: When the choice is between two moving objects or two stationary objects, select that which was contacted first.
+Example 3: If a worker is struck by a roll of paper and then a box and it is unclear which caused the injury, code the roll of paper as the source.
+3)     Select the code that appears first in the numeric code order (order of precedence): If case information is not available to support a source selection based on the guidance above in c.1-2,  select the code that appears first in the numeric order of the manual. If event rules of selection do not specify another secondary source, the object not coded as source may be coded as a secondary source if it is deemed to have exacerbated the incident.
