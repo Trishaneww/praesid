@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    container_name: praesid-postgres
+    environment:
+      POSTGRES_USER: praesid
+      POSTGRES_PASSWORD: praesid
+      POSTGRES_DB: praesid
+    ports:
+      - "5432:5432"
+    volumes:
+      - praesid-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  praesid-postgres-data:

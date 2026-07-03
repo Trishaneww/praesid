@@ -1,0 +1,17 @@
+{
+  "name": "praesid",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "db:up": "docker compose up -d",
+    "db:stop": "docker compose stop",
+    "db:logs": "docker compose logs -f postgres"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.4"
+  },
+  "packageManager": "pnpm@11.9.0"
+}
