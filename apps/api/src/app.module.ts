@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { ClientsModule } from './lib/clients/clients.module';
 import { OiicsModule } from './oiics/oiics.module';
 import { IncidentsModule } from './incidents/incidents.module';
+import { TenantsModule } from './tenants/tenants.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { IncidentsModule } from './incidents/incidents.module';
     ClientsModule,
     OiicsModule,
     IncidentsModule,
+    TenantsModule,
   ],
   controllers: [AppController],
   providers: [

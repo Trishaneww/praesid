@@ -96,6 +96,7 @@ export class ClassificationService {
       where: { id: incidentId },
       include: { codes: { orderBy: { structure: 'asc' } } },
     });
-    return formatIncidentDetail(classified!);
+    const titleByKey = await this.oiics.getCodeTitles(classified!.codes);
+    return formatIncidentDetail(classified!, titleByKey);
   }
 }

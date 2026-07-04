@@ -1,5 +1,9 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { IncidentDetail, IncidentSummary } from '@praesid/shared';
+import {
+  IncidentDetail,
+  IncidentSummary,
+  SimilarIncident,
+} from '@praesid/shared';
 import { IncidentsService } from './incidents.service';
 import { ClassificationService } from './classification.service';
 import { CreateIncidentDto } from './dto/create-incident.dto';
@@ -30,5 +34,10 @@ export class IncidentsController {
   @Post(':id/classify')
   classifyIncident(@Param('id') id: string): Promise<IncidentDetail> {
     return this.classificationService.classifyIncident(id);
+  }
+
+  @Get(':id/similar')
+  findSimilarIncidents(@Param('id') id: string): Promise<SimilarIncident[]> {
+    return this.incidentsService.findSimilarIncidents(id);
   }
 }

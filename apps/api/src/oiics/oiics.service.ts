@@ -35,6 +35,22 @@ export class OiicsService {
     @Inject(EMBEDDING_CLIENT) private readonly embeddingClient: EmbeddingClient,
   ) {}
 
+  async getCodeTitles(
+    refs: { structure: OiicsStructure; code: string }[],
+  ): Promise<Record<string, string>> {
+    if (refs.length === 0) return {};
+    const rows = await this.prisma.oiicsCode.findMany({
+      where: {
+        version: CURRENT_OIICS_VERSION,
+        OR: refs.map((ref) => ({ structure: ref.structure, code: ref.code })),
+      },
+      select: { structure: true, code: true, title: true },
+    });
+    return Object.fromEntries(
+      rows.map((row) => [`${row.structure}|${row.code}`, row.title]),
+    );
+  }
+
   async searchCandidateCodes(narrative: string): Promise<OiicsSearchResponse> {
     const [narrativeVector] = await this.embeddingClient.embedText(
       [narrative],

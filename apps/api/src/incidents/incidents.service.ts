@@ -1,9 +1,15 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { IncidentDetail, IncidentSummary } from '@praesid/shared';
+import {
+  IncidentDetail,
+  IncidentSummary,
+  SimilarIncident,
+} from '@praesid/shared';
 import { PrismaService } from '../lib/clients/prisma.service';
+import { OiicsService } from '../oiics/oiics.service';
 import { EMBEDDING_CLIENT } from '../lib/clients/embedding-client';
 import type { EmbeddingClient } from '../lib/clients/embedding-client';
 import { EMBEDDING_MODEL_ID } from '../constants/embeddings';
+import { SIMILAR_INCIDENTS_LIMIT } from '../constants/incidents';
 import {
   formatIncidentDetail,
   formatIncidentSummary,
@@ -11,10 +17,19 @@ import {
 import { CreateIncidentDto } from './dto/create-incident.dto';
 import { ClassificationService } from './classification.service';
 
+interface SimilarIncidentRow {
+  id: string;
+  narrative: string;
+  occurredAt: Date | null;
+  createdAt: Date;
+  similarity: number;
+}
+
 @Injectable()
 export class IncidentsService {
   constructor(
     private readonly prisma: PrismaService,
+    private readonly oiics: OiicsService,
     @Inject(EMBEDDING_CLIENT) private readonly embeddingClient: EmbeddingClient,
     private readonly classification: ClassificationService,
   ) {}
@@ -49,13 +64,14 @@ export class IncidentsService {
     if (dto.autoClassify) {
       return this.classification.classifyIncident(incident.id);
     }
-    return formatIncidentDetail({ ...incident, codes: [] });
+    return formatIncidentDetail({ ...incident, codes: [] }, {});
   }
 
   async listIncidents(tenantId: string): Promise<IncidentSummary[]> {
     const incidents = await this.prisma.incident.findMany({
       where: { tenantId },
       orderBy: { createdAt: 'desc' },
+      include: { codes: { select: { status: true } } },
     });
     return incidents.map(formatIncidentSummary);
   }
@@ -68,6 +84,28 @@ export class IncidentsService {
     if (!incident) {
       throw new NotFoundException(`Incident ${id} not found`);
     }
-    return formatIncidentDetail(incident);
+    const titleByKey = await this.oiics.getCodeTitles(incident.codes);
+    return formatIncidentDetail(incident, titleByKey);
+  }
+
+  async findSimilarIncidents(id: string): Promise<SimilarIncident[]> {
+    const rows = await this.prisma.$queryRaw<SimilarIncidentRow[]>`
+      SELECT i.id, i.narrative, i."occurredAt", i."createdAt",
+             1 - (i.embedding <=> source.embedding) AS similarity
+      FROM "Incident" i, (SELECT "tenantId", embedding FROM "Incident" WHERE id = ${id}) source
+      WHERE i."tenantId" = source."tenantId"
+        AND i.id <> ${id}
+        AND i.embedding IS NOT NULL
+        AND source.embedding IS NOT NULL
+      ORDER BY i.embedding <=> source.embedding
+      LIMIT ${SIMILAR_INCIDENTS_LIMIT}
+    `;
+    return rows.map((row) => ({
+      id: row.id,
+      narrative: row.narrative,
+      occurredAt: row.occurredAt?.toISOString() ?? null,
+      createdAt: row.createdAt.toISOString(),
+      similarity: row.similarity,
+    }));
   }
 }

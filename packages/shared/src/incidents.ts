@@ -14,6 +14,7 @@ export type IncidentCodeStatus = 'AUTO' | 'NEEDS_REVIEW' | 'HUMAN_CONFIRMED';
 export interface IncidentCodeSummary {
   structure: OiicsStructure;
   code: string;
+  title: string | null;
   codeVersion: string;
   confidence: number;
   retrievalSimilarity: number | null;
@@ -29,8 +30,18 @@ export interface IncidentSummary {
   reportedBy: string | null;
   externalRef: string | null;
   createdAt: string;
+  codeCount: number;
+  needsReviewCount: number;
 }
 
 export interface IncidentDetail extends IncidentSummary {
   codes: IncidentCodeSummary[];
+}
+
+export interface SimilarIncident {
+  id: string;
+  narrative: string;
+  occurredAt: string | null;
+  createdAt: string;
+  similarity: number;
 }

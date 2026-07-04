@@ -1,0 +1,1 @@
+export const SIMILAR_INCIDENTS_LIMIT = 5;
