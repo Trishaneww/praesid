@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { OIICS_STRUCTURES, OiicsStructure } from '@praesid/shared';
 import { AppModule } from '../../app.module';
 import { AnthropicService } from '../../lib/clients/anthropic.service';
-import { OiicsService } from '../../oiics/oiics.service';
+import { OiicsRepository } from '../../oiics/oiics.repository';
 import {
   ClassificationService,
   StructurePrediction,
@@ -87,7 +87,7 @@ async function runEval() {
     logger: ['error', 'warn'],
   });
   const classifier = app.get(ClassificationService);
-  const oiics = app.get(OiicsService);
+  const oiics = app.get(OiicsRepository);
   const anthropic = app.get(AnthropicService);
 
   try {

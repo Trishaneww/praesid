@@ -1,4 +1,4 @@
-import { OiicsClassificationCandidate } from '../../oiics/oiics.service';
+import { OiicsClassificationCandidate } from '../../oiics/oiics.repository';
 
 export const formatCandidatesForPrompt = (
   candidates: OiicsClassificationCandidate[],

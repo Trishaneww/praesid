@@ -5,6 +5,7 @@ import { CLASSIFICATION_QUEUE } from '../constants/queue';
 import { BulkController } from './bulk.controller';
 import { BulkService } from './bulk.service';
 import { ClassificationProcessor } from './classification.processor';
+import { BulkUploadsRepository } from './bulk.repository';
 
 @Module({
   imports: [
@@ -20,6 +21,6 @@ import { ClassificationProcessor } from './classification.processor';
     IncidentsModule,
   ],
   controllers: [BulkController],
-  providers: [BulkService, ClassificationProcessor],
+  providers: [BulkService, ClassificationProcessor, BulkUploadsRepository],
 })
 export class BulkModule {}

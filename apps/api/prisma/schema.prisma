@@ -86,8 +86,8 @@ model IncidentCode {
   structure              OiicsStructure
   code                   String
   codeVersion            String
-  confidence             Float // model self-reported confidence
-  retrievalSimilarity    Float? // top candidate cosine similarity — objective second gate signal
+  confidence             Float 
+  retrievalSimilarity    Float? 
   rationale              String
   alternativesConsidered Json?
   modelId                String

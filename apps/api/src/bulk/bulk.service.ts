@@ -7,13 +7,13 @@ import {
 } from '@nestjs/common';
 import { Queue } from 'bullmq';
 import { BulkUploadSummary } from '@praesid/shared';
-import { PrismaService } from '../lib/clients/prisma.service';
 import { EMBEDDING_CLIENT } from '../lib/clients/embedding-client';
 import type { EmbeddingClient } from '../lib/clients/embedding-client';
-import { EMBEDDING_MODEL_ID } from '../constants/embeddings';
+import { IncidentsRepository } from '../incidents/incidents.repository';
 import { CLASSIFICATION_QUEUE } from '../constants/queue';
 import { parseUploadRows } from '../lib/bulk/parseUploadRows';
 import { formatBulkUpload } from '../lib/bulk/mapBulkUpload';
+import { BulkUploadsRepository } from './bulk.repository';
 import { CreateBulkUploadDto } from './dto/create-bulk-upload.dto';
 
 export interface ClassificationJobData {
@@ -24,7 +24,8 @@ export interface ClassificationJobData {
 @Injectable()
 export class BulkService {
   constructor(
-    private readonly prisma: PrismaService,
+    private readonly bulkUploadsRepository: BulkUploadsRepository,
+    private readonly incidentsRepository: IncidentsRepository,
     @Inject(EMBEDDING_CLIENT) private readonly embeddingClient: EmbeddingClient,
     @InjectQueue(CLASSIFICATION_QUEUE)
     private readonly queue: Queue<ClassificationJobData>,
@@ -39,12 +40,10 @@ export class BulkService {
       );
     }
 
-    const upload = await this.prisma.bulkUpload.create({
-      data: {
-        tenantId: dto.tenantId,
-        filename: dto.filename,
-        totalRows: narratives.length,
-      },
+    const upload = await this.bulkUploadsRepository.create({
+      tenantId: dto.tenantId,
+      filename: dto.filename,
+      totalRows: narratives.length,
     });
 
     const vectors = await this.embeddingClient.embedText(
@@ -53,28 +52,18 @@ export class BulkService {
     );
     const incidentIds: string[] = [];
     for (let i = 0; i < narratives.length; i++) {
-      const incident = await this.prisma.incident.create({
-        data: {
+      const incident = await this.incidentsRepository.createWithEmbedding(
+        {
           tenantId: dto.tenantId,
           bulkUploadId: upload.id,
           narrative: narratives[i],
         },
-      });
-      const vectorLiteral = `[${vectors[i].join(',')}]`;
-      await this.prisma.$executeRaw`
-        UPDATE "Incident"
-        SET embedding = ${vectorLiteral}::vector,
-            "embeddedText" = ${narratives[i]},
-            "embeddingModel" = ${EMBEDDING_MODEL_ID}
-        WHERE id = ${incident.id}
-      `;
+        vectors[i],
+      );
       incidentIds.push(incident.id);
     }
 
-    await this.prisma.bulkUpload.update({
-      where: { id: upload.id },
-      data: { status: 'PROCESSING' },
-    });
+    await this.bulkUploadsRepository.markProcessing(upload.id);
     await this.queue.addBulk(
       incidentIds.map((incidentId) => ({
         name: 'classify',
@@ -86,16 +75,13 @@ export class BulkService {
   }
 
   async getUpload(id: string): Promise<BulkUploadSummary> {
-    const upload = await this.prisma.bulkUpload.findUnique({ where: { id } });
+    const upload = await this.bulkUploadsRepository.findById(id);
     if (!upload) throw new NotFoundException(`Bulk upload ${id} not found`);
     return formatBulkUpload(upload);
   }
 
   async listUploads(tenantId: string): Promise<BulkUploadSummary[]> {
-    const uploads = await this.prisma.bulkUpload.findMany({
-      where: { tenantId },
-      orderBy: { createdAt: 'desc' },
-    });
+    const uploads = await this.bulkUploadsRepository.findByTenant(tenantId);
     return uploads.map(formatBulkUpload);
   }
 }

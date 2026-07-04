@@ -1,8 +1,8 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Job } from 'bullmq';
 import * as Sentry from '@sentry/nestjs';
-import { PrismaService } from '../lib/clients/prisma.service';
 import { ClassificationService } from '../incidents/classification.service';
+import { BulkUploadsRepository } from './bulk.repository';
 import {
   CLASSIFICATION_CONCURRENCY,
   CLASSIFICATION_QUEUE,
@@ -13,7 +13,7 @@ import { ClassificationJobData } from './bulk.service';
 export class ClassificationProcessor extends WorkerHost {
   constructor(
     private readonly classification: ClassificationService,
-    private readonly prisma: PrismaService,
+    private readonly bulkUploadsRepository: BulkUploadsRepository,
   ) {
     super();
   }
@@ -29,17 +29,12 @@ export class ClassificationProcessor extends WorkerHost {
       Sentry.captureException(error);
     }
 
-    const upload = await this.prisma.bulkUpload.update({
-      where: { id: bulkUploadId },
-      data: succeeded
-        ? { processedRows: { increment: 1 } }
-        : { failedRows: { increment: 1 } },
-    });
+    const upload = await this.bulkUploadsRepository.incrementProgress(
+      bulkUploadId,
+      succeeded,
+    );
     if (upload.processedRows + upload.failedRows >= upload.totalRows) {
-      await this.prisma.bulkUpload.update({
-        where: { id: bulkUploadId },
-        data: { status: 'COMPLETED', completedAt: new Date() },
-      });
+      await this.bulkUploadsRepository.markCompleted(bulkUploadId);
     }
   }
 }

@@ -6,32 +6,23 @@ import {
   OiicsStructure,
   SimilarIncident,
 } from '@praesid/shared';
-import { PrismaService } from '../lib/clients/prisma.service';
-import { OiicsService } from '../oiics/oiics.service';
+import { OiicsRepository } from '../oiics/oiics.repository';
 import { EMBEDDING_CLIENT } from '../lib/clients/embedding-client';
 import type { EmbeddingClient } from '../lib/clients/embedding-client';
-import { EMBEDDING_MODEL_ID } from '../constants/embeddings';
 import { SIMILAR_INCIDENTS_LIMIT } from '../constants/incidents';
 import {
   formatIncidentDetail,
   formatIncidentSummary,
 } from '../lib/incidents/mapIncident';
+import { IncidentsRepository } from './incidents.repository';
 import { CreateIncidentDto } from './dto/create-incident.dto';
 import { ClassificationService } from './classification.service';
-
-interface SimilarIncidentRow {
-  id: string;
-  narrative: string;
-  occurredAt: Date | null;
-  createdAt: Date;
-  similarity: number;
-}
 
 @Injectable()
 export class IncidentsService {
   constructor(
-    private readonly prisma: PrismaService,
-    private readonly oiics: OiicsService,
+    private readonly incidentsRepository: IncidentsRepository,
+    private readonly oiicsRepository: OiicsRepository,
     @Inject(EMBEDDING_CLIENT) private readonly embeddingClient: EmbeddingClient,
     private readonly classification: ClassificationService,
   ) {}
@@ -41,27 +32,16 @@ export class IncidentsService {
       [dto.narrative],
       'document',
     );
-    const vectorLiteral = `[${narrativeVector.join(',')}]`;
-
-    const incident = await this.prisma.$transaction(async (tx) => {
-      const created = await tx.incident.create({
-        data: {
-          tenantId: dto.tenantId,
-          narrative: dto.narrative,
-          occurredAt: dto.occurredAt ? new Date(dto.occurredAt) : null,
-          reportedBy: dto.reportedBy ?? null,
-          externalRef: dto.externalRef ?? null,
-        },
-      });
-      await tx.$executeRaw`
-        UPDATE "Incident"
-        SET embedding = ${vectorLiteral}::vector,
-            "embeddedText" = ${dto.narrative},
-            "embeddingModel" = ${EMBEDDING_MODEL_ID}
-        WHERE id = ${created.id}
-      `;
-      return created;
-    });
+    const incident = await this.incidentsRepository.createWithEmbedding(
+      {
+        tenantId: dto.tenantId,
+        narrative: dto.narrative,
+        occurredAt: dto.occurredAt ? new Date(dto.occurredAt) : null,
+        reportedBy: dto.reportedBy ?? null,
+        externalRef: dto.externalRef ?? null,
+      },
+      narrativeVector,
+    );
 
     if (dto.autoClassify) {
       return this.classification.classifyIncident(incident.id);
@@ -70,23 +50,16 @@ export class IncidentsService {
   }
 
   async listIncidents(tenantId: string): Promise<IncidentSummary[]> {
-    const incidents = await this.prisma.incident.findMany({
-      where: { tenantId },
-      orderBy: { createdAt: 'desc' },
-      include: { codes: { select: { status: true } } },
-    });
+    const incidents = await this.incidentsRepository.findByTenant(tenantId);
     return incidents.map(formatIncidentSummary);
   }
 
   async getIncident(id: string): Promise<IncidentDetail> {
-    const incident = await this.prisma.incident.findUnique({
-      where: { id },
-      include: { codes: { orderBy: { structure: 'asc' } } },
-    });
+    const incident = await this.incidentsRepository.findByIdWithCodes(id);
     if (!incident) {
       throw new NotFoundException(`Incident ${id} not found`);
     }
-    const titleByKey = await this.oiics.getCodeTitles(incident.codes);
+    const titleByKey = await this.oiicsRepository.getCodeTitles(incident.codes);
     return formatIncidentDetail(incident, titleByKey);
   }
 
@@ -96,10 +69,11 @@ export class IncidentsService {
     status: IncidentCodeStatus,
   ): Promise<IncidentDetail> {
     try {
-      await this.prisma.incidentCode.update({
-        where: { incidentId_structure: { incidentId, structure } },
-        data: { status },
-      });
+      await this.incidentsRepository.updateCodeStatus(
+        incidentId,
+        structure,
+        status,
+      );
     } catch {
       throw new NotFoundException(
         `No ${structure} code found for incident ${incidentId}`,
@@ -109,17 +83,10 @@ export class IncidentsService {
   }
 
   async findSimilarIncidents(id: string): Promise<SimilarIncident[]> {
-    const rows = await this.prisma.$queryRaw<SimilarIncidentRow[]>`
-      SELECT i.id, i.narrative, i."occurredAt", i."createdAt",
-             1 - (i.embedding <=> source.embedding) AS similarity
-      FROM "Incident" i, (SELECT "tenantId", embedding FROM "Incident" WHERE id = ${id}) source
-      WHERE i."tenantId" = source."tenantId"
-        AND i.id <> ${id}
-        AND i.embedding IS NOT NULL
-        AND source.embedding IS NOT NULL
-      ORDER BY i.embedding <=> source.embedding
-      LIMIT ${SIMILAR_INCIDENTS_LIMIT}
-    `;
+    const rows = await this.incidentsRepository.findSimilar(
+      id,
+      SIMILAR_INCIDENTS_LIMIT,
+    );
     return rows.map((row) => ({
       id: row.id,
       narrative: row.narrative,

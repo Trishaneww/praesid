@@ -4,12 +4,11 @@ import {
   OIICS_STRUCTURES,
   OiicsStructure,
 } from '@praesid/shared';
-import { Prisma } from '../generated/prisma/client';
-import { PrismaService } from '../lib/clients/prisma.service';
 import { AnthropicService } from '../lib/clients/anthropic.service';
 import { EMBEDDING_CLIENT } from '../lib/clients/embedding-client';
 import type { EmbeddingClient } from '../lib/clients/embedding-client';
-import { OiicsService } from '../oiics/oiics.service';
+import { OiicsRepository } from '../oiics/oiics.repository';
+import { IncidentsRepository } from './incidents.repository';
 import { CURRENT_OIICS_VERSION } from '../constants/oiics';
 import { PIPELINE_PROMPT_VERSION } from '../constants/classification';
 import { decomposeIncidentNarrative } from '../lib/incidents/decomposeIncidentNarrative';
@@ -38,9 +37,9 @@ export interface NarrativeClassification {
 @Injectable()
 export class ClassificationService {
   constructor(
-    private readonly prisma: PrismaService,
+    private readonly incidentsRepository: IncidentsRepository,
     private readonly anthropic: AnthropicService,
-    private readonly oiics: OiicsService,
+    private readonly oiicsRepository: OiicsRepository,
     @Inject(EMBEDDING_CLIENT) private readonly embeddingClient: EmbeddingClient,
   ) {}
 
@@ -64,10 +63,11 @@ export class ClassificationService {
     const rules = loadOiicsRules();
 
     for (const [index, structure] of activeStructures.entries()) {
-      const candidates = await this.oiics.retrieveClassificationCandidates(
-        structure,
-        queryVectors[index],
-      );
+      const candidates =
+        await this.oiicsRepository.retrieveClassificationCandidates(
+          structure,
+          queryVectors[index],
+        );
       if (candidates.length === 0) continue;
 
       const {
@@ -102,9 +102,7 @@ export class ClassificationService {
   }
 
   async classifyIncident(incidentId: string): Promise<IncidentDetail> {
-    const incident = await this.prisma.incident.findUnique({
-      where: { id: incidentId },
-    });
+    const incident = await this.incidentsRepository.findById(incidentId);
     if (!incident) {
       throw new NotFoundException(`Incident ${incidentId} not found`);
     }
@@ -116,32 +114,28 @@ export class ClassificationService {
         modelConfidence: prediction.confidence,
         retrievalSimilarity: prediction.retrievalSimilarity,
       });
-      const fields = {
-        code: prediction.code,
-        codeVersion: CURRENT_OIICS_VERSION,
-        confidence: prediction.confidence,
-        retrievalSimilarity: prediction.retrievalSimilarity,
-        rationale: prediction.rationale,
-        alternativesConsidered:
-          prediction.alternativesConsidered as unknown as Prisma.InputJsonValue,
-        modelId: prediction.modelId,
-        promptVersion: PIPELINE_PROMPT_VERSION,
-        status,
-      };
-      await this.prisma.incidentCode.upsert({
-        where: {
-          incidentId_structure: { incidentId, structure: prediction.structure },
+      await this.incidentsRepository.upsertCode(
+        incidentId,
+        prediction.structure,
+        {
+          code: prediction.code,
+          codeVersion: CURRENT_OIICS_VERSION,
+          confidence: prediction.confidence,
+          retrievalSimilarity: prediction.retrievalSimilarity,
+          rationale: prediction.rationale,
+          alternativesConsidered: prediction.alternativesConsidered,
+          modelId: prediction.modelId,
+          promptVersion: PIPELINE_PROMPT_VERSION,
+          status,
         },
-        create: { incidentId, structure: prediction.structure, ...fields },
-        update: fields,
-      });
+      );
     }
 
-    const classified = await this.prisma.incident.findUnique({
-      where: { id: incidentId },
-      include: { codes: { orderBy: { structure: 'asc' } } },
-    });
-    const titleByKey = await this.oiics.getCodeTitles(classified!.codes);
+    const classified =
+      await this.incidentsRepository.findByIdWithCodes(incidentId);
+    const titleByKey = await this.oiicsRepository.getCodeTitles(
+      classified!.codes,
+    );
     return formatIncidentDetail(classified!, titleByKey);
   }
 }

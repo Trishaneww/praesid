@@ -5,7 +5,7 @@ import { AppModule } from '../../app.module';
 import { AnthropicService } from '../../lib/clients/anthropic.service';
 import { EMBEDDING_CLIENT } from '../../lib/clients/embedding-client';
 import type { EmbeddingClient } from '../../lib/clients/embedding-client';
-import { OiicsService } from '../../oiics/oiics.service';
+import { OiicsRepository } from '../../oiics/oiics.repository';
 import { decomposeIncidentNarrative } from '../../lib/incidents/decomposeIncidentNarrative';
 import { classifyStructureCode } from '../../lib/incidents/classifyStructureCode';
 import { loadOiicsRules } from '../../lib/incidents/loadOiicsRules';
@@ -26,7 +26,7 @@ async function diagnose() {
     logger: ['error', 'warn'],
   });
   const anthropic = app.get(AnthropicService);
-  const oiics = app.get(OiicsService);
+  const oiics = app.get(OiicsRepository);
   const embeddingClient = app.get<EmbeddingClient>(EMBEDDING_CLIENT);
   const rules = loadOiicsRules();
 

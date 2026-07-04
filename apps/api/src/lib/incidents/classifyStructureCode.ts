@@ -6,7 +6,7 @@ import {
   CLASSIFY_SYSTEM_PREAMBLE,
 } from '../../constants/classification';
 import { OIICS_STRUCTURE_LABELS } from '../../constants/oiics';
-import { OiicsClassificationCandidate } from '../../oiics/oiics.service';
+import { OiicsClassificationCandidate } from '../../oiics/oiics.repository';
 import { formatCandidatesForPrompt } from './formatCandidatesForPrompt';
 import { parseStructuredResponse } from './parseStructuredResponse';
 import {

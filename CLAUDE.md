@@ -50,7 +50,9 @@ These are strict. Prioritize a clean, intuitive, readable structure. Readability
 ### NestJS (apps/api)
 
 - Same principle as components: controllers stay thin and only wire HTTP routes to services. No business logic or helpers in controllers.
-- Business logic lives in services. Reusable pure helpers live in `lib/`, organized by feature, mirroring the frontend.
+- Business logic lives in services. Services orchestrate; they do not talk to the database directly.
+- Database access lives in per-feature `@Injectable()` **repositories** (`incidents/incidents.repository.ts`, `oiics/oiics.repository.ts`, and so on) that wrap `PrismaService`. A repository holds the queries (including raw pgvector SQL); the service injects it and delegates. Never call `this.prisma.*` from a service. Register each repository as a provider in its module and export it where another module needs it.
+- Reusable pure helpers (mappers, formatters, prompt builders — anything stateless with no DB access) live in `lib/`, organized by feature, mirroring the frontend.
 - DTOs are classes with class-validator decorators, since they must exist at runtime for validation.
 
 ### Shared structure (both apps)

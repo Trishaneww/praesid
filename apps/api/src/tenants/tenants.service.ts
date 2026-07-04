@@ -1,15 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Tenant } from '@praesid/shared';
-import { PrismaService } from '../lib/clients/prisma.service';
+import { TenantsRepository } from './tenants.repository';
 
 @Injectable()
 export class TenantsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly tenantsRepository: TenantsRepository) {}
 
   listTenants(): Promise<Tenant[]> {
-    return this.prisma.tenant.findMany({
-      orderBy: { createdAt: 'asc' },
-      select: { id: true, name: true, slug: true },
-    });
+    return this.tenantsRepository.findAll();
   }
 }
