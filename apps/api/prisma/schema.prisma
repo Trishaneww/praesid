@@ -19,6 +19,59 @@ enum OiicsStructure {
   LOCATION
 }
 
+enum IncidentCodeStatus {
+  AUTO
+  NEEDS_REVIEW
+  HUMAN_CONFIRMED
+}
+
+model Tenant {
+  id        String     @id @default(cuid())
+  name      String
+  slug      String     @unique
+  createdAt DateTime   @default(now())
+  incidents Incident[]
+}
+
+model Incident {
+  id             String    @id @default(cuid())
+  tenantId       String
+  tenant         Tenant    @relation(fields: [tenantId], references: [id])
+  narrative      String
+  occurredAt     DateTime?
+  reportedBy     String?
+  externalRef    String?
+  embeddingModel String?
+  embeddedText   String?
+
+  embedding      Unsupported("vector(1024)")?
+
+  createdAt      DateTime  @default(now())
+  codes          IncidentCode[]
+
+  @@index([tenantId, createdAt])
+}
+
+model IncidentCode {
+  id                     String             @id @default(cuid())
+  incidentId             String
+  incident               Incident           @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  structure              OiicsStructure
+  code                   String
+  codeVersion            String
+  confidence             Float // model self-reported confidence
+  retrievalSimilarity    Float? // top candidate cosine similarity — objective second gate signal
+  rationale              String
+  alternativesConsidered Json?
+  modelId                String
+  promptVersion          String
+  status                 IncidentCodeStatus @default(NEEDS_REVIEW)
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
+
+  @@unique([incidentId, structure])
+}
+
 model OiicsCode {
   id                 String         @id @default(cuid())
   structure          OiicsStructure
