@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsDateString,
   IsNotEmpty,
   IsOptional,
@@ -30,4 +31,8 @@ export class CreateIncidentDto implements CreateIncidentRequest {
   @IsString()
   @MaxLength(200)
   externalRef?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  autoClassify?: boolean;
 }

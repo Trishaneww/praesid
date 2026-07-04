@@ -1,12 +1,16 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { IncidentDetail, IncidentSummary } from '@praesid/shared';
 import { IncidentsService } from './incidents.service';
+import { ClassificationService } from './classification.service';
 import { CreateIncidentDto } from './dto/create-incident.dto';
 import { ListIncidentsDto } from './dto/list-incidents.dto';
 
 @Controller('incidents')
 export class IncidentsController {
-  constructor(private readonly incidentsService: IncidentsService) {}
+  constructor(
+    private readonly incidentsService: IncidentsService,
+    private readonly classificationService: ClassificationService,
+  ) {}
 
   @Post()
   createIncident(@Body() dto: CreateIncidentDto): Promise<IncidentDetail> {
@@ -21,5 +25,10 @@ export class IncidentsController {
   @Get(':id')
   getIncident(@Param('id') id: string): Promise<IncidentDetail> {
     return this.incidentsService.getIncident(id);
+  }
+
+  @Post(':id/classify')
+  classifyIncident(@Param('id') id: string): Promise<IncidentDetail> {
+    return this.classificationService.classifyIncident(id);
   }
 }

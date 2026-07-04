@@ -9,12 +9,14 @@ import {
   formatIncidentSummary,
 } from '../lib/incidents/mapIncident';
 import { CreateIncidentDto } from './dto/create-incident.dto';
+import { ClassificationService } from './classification.service';
 
 @Injectable()
 export class IncidentsService {
   constructor(
     private readonly prisma: PrismaService,
     @Inject(EMBEDDING_CLIENT) private readonly embeddingClient: EmbeddingClient,
+    private readonly classification: ClassificationService,
   ) {}
 
   async createIncident(dto: CreateIncidentDto): Promise<IncidentDetail> {
@@ -44,6 +46,9 @@ export class IncidentsService {
       return created;
     });
 
+    if (dto.autoClassify) {
+      return this.classification.classifyIncident(incident.id);
+    }
     return formatIncidentDetail({ ...incident, codes: [] });
   }
 

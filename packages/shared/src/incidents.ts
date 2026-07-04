@@ -6,6 +6,7 @@ export interface CreateIncidentRequest {
   occurredAt?: string;
   reportedBy?: string;
   externalRef?: string;
+  autoClassify?: boolean;
 }
 
 export type IncidentCodeStatus = 'AUTO' | 'NEEDS_REVIEW' | 'HUMAN_CONFIRMED';
