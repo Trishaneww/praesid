@@ -11,6 +11,10 @@ export interface CreateIncidentRequest {
 
 export type IncidentCodeStatus = 'AUTO' | 'NEEDS_REVIEW' | 'HUMAN_CONFIRMED';
 
+export interface UpdateIncidentCodeStatusRequest {
+  status: 'HUMAN_CONFIRMED' | 'NEEDS_REVIEW';
+}
+
 export interface IncidentCodeSummary {
   structure: OiicsStructure;
   code: string;

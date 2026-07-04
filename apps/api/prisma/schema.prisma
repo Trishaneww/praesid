@@ -25,18 +25,44 @@ enum IncidentCodeStatus {
   HUMAN_CONFIRMED
 }
 
+enum BulkUploadStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
 model Tenant {
-  id        String     @id @default(cuid())
-  name      String
-  slug      String     @unique
-  createdAt DateTime   @default(now())
-  incidents Incident[]
+  id          String       @id @default(cuid())
+  name        String
+  slug        String       @unique
+  createdAt   DateTime     @default(now())
+  incidents   Incident[]
+  bulkUploads BulkUpload[]
+}
+
+model BulkUpload {
+  id            String           @id @default(cuid())
+  tenantId      String
+  tenant        Tenant           @relation(fields: [tenantId], references: [id])
+  filename      String
+  status        BulkUploadStatus @default(PENDING)
+  totalRows     Int
+  processedRows Int              @default(0)
+  failedRows    Int              @default(0)
+  createdAt     DateTime         @default(now())
+  completedAt   DateTime?
+  incidents     Incident[]
+
+  @@index([tenantId, createdAt])
 }
 
 model Incident {
   id             String    @id @default(cuid())
   tenantId       String
   tenant         Tenant    @relation(fields: [tenantId], references: [id])
+  bulkUploadId   String?
+  bulkUpload     BulkUpload? @relation(fields: [bulkUploadId], references: [id])
   narrative      String
   occurredAt     DateTime?
   reportedBy     String?
@@ -50,6 +76,7 @@ model Incident {
   codes          IncidentCode[]
 
   @@index([tenantId, createdAt])
+  @@index([bulkUploadId])
 }
 
 model IncidentCode {

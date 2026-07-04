@@ -1,7 +1,9 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import {
+  IncidentCodeStatus,
   IncidentDetail,
   IncidentSummary,
+  OiicsStructure,
   SimilarIncident,
 } from '@praesid/shared';
 import { PrismaService } from '../lib/clients/prisma.service';
@@ -86,6 +88,24 @@ export class IncidentsService {
     }
     const titleByKey = await this.oiics.getCodeTitles(incident.codes);
     return formatIncidentDetail(incident, titleByKey);
+  }
+
+  async updateCodeStatus(
+    incidentId: string,
+    structure: OiicsStructure,
+    status: IncidentCodeStatus,
+  ): Promise<IncidentDetail> {
+    try {
+      await this.prisma.incidentCode.update({
+        where: { incidentId_structure: { incidentId, structure } },
+        data: { status },
+      });
+    } catch {
+      throw new NotFoundException(
+        `No ${structure} code found for incident ${incidentId}`,
+      );
+    }
+    return this.getIncident(incidentId);
   }
 
   async findSimilarIncidents(id: string): Promise<SimilarIncident[]> {

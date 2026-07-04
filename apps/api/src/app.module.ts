@@ -7,6 +7,7 @@ import { ClientsModule } from './lib/clients/clients.module';
 import { OiicsModule } from './oiics/oiics.module';
 import { IncidentsModule } from './incidents/incidents.module';
 import { TenantsModule } from './tenants/tenants.module';
+import { BulkModule } from './bulk/bulk.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { TenantsModule } from './tenants/tenants.module';
     OiicsModule,
     IncidentsModule,
     TenantsModule,
+    BulkModule,
   ],
   controllers: [AppController],
   providers: [
