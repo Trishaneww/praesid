@@ -62,6 +62,10 @@ export const useIncidents = () => {
     }
   };
 
+  const reload = useCallback(() => {
+    if (tenant) void refresh(tenant.id);
+  }, [tenant, refresh]);
+
   return {
     tenant,
     incidents,
@@ -72,5 +76,6 @@ export const useIncidents = () => {
     isLoading,
     isSubmitting,
     submitIncident,
+    reload,
   };
 };

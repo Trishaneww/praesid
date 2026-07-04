@@ -26,7 +26,7 @@ import { formatIncidentDate } from '@/lib/incidents';
 export default function IncidentDetailPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
-  const { incident, similar, isLoading, isClassifying, reclassify } =
+  const { incident, similar, isLoading, isClassifying, reclassify, confirmCode } =
     useIncidentDetail(params.id);
 
   return (
@@ -77,7 +77,11 @@ export default function IncidentDetailPage() {
           ) : (
             <div className="grid gap-4 sm:grid-cols-2">
               {incident.codes.map((code) => (
-                <IncidentCodeCard key={code.structure} code={code} />
+                <IncidentCodeCard
+                  key={code.structure}
+                  code={code}
+                  onConfirm={confirmCode}
+                />
               ))}
             </div>
           )}

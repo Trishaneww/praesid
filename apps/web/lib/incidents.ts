@@ -1,7 +1,9 @@
 import {
   CreateIncidentRequest,
+  IncidentCodeStatus,
   IncidentDetail,
   IncidentSummary,
+  OiicsStructure,
   SimilarIncident,
 } from '@praesid/shared';
 import { API_BASE_URL } from '@/constants/api';
@@ -37,6 +39,17 @@ export const classifyIncident = (id: string): Promise<IncidentDetail> =>
 
 export const fetchSimilarIncidents = (id: string): Promise<SimilarIncident[]> =>
   fetch(`${API_BASE_URL}/incidents/${id}/similar`).then(readJson);
+
+export const updateCodeStatus = (
+  incidentId: string,
+  structure: OiicsStructure,
+  status: Extract<IncidentCodeStatus, 'HUMAN_CONFIRMED' | 'NEEDS_REVIEW'>,
+): Promise<IncidentDetail> =>
+  fetch(`${API_BASE_URL}/incidents/${incidentId}/codes/${structure}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status }),
+  }).then(readJson);
 
 export const formatIncidentDate = (iso: string | null): string =>
   iso

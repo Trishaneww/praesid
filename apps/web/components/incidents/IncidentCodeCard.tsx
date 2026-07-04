@@ -1,4 +1,5 @@
-import { IncidentCodeSummary } from "@praesid/shared";
+import { IncidentCodeSummary, OiicsStructure } from "@praesid/shared";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,7 +10,12 @@ import { StatusBadge } from "@/components/incidents/StatusBadge";
 import { OIICS_STRUCTURE_LABELS } from "@/constants/oiics";
 import { formatConfidence, formatSimilarity } from "@/lib/incidents";
 
-export const IncidentCodeCard = ({ code }: { code: IncidentCodeSummary }) => (
+interface IncidentCodeCardProps {
+  code: IncidentCodeSummary;
+  onConfirm: (structure: OiicsStructure) => void;
+}
+
+export const IncidentCodeCard = ({ code, onConfirm }: IncidentCodeCardProps) => (
   <Card>
     <CardHeader className="gap-1">
       <div className="flex items-center justify-between">
@@ -25,10 +31,21 @@ export const IncidentCodeCard = ({ code }: { code: IncidentCodeSummary }) => (
     </CardHeader>
     <CardContent className="flex flex-col gap-2 text-sm">
       <p className="text-muted-foreground">{code.rationale}</p>
-      <div className="flex gap-4 text-xs text-muted-foreground tabular-nums">
-        <span>Confidence {formatConfidence(code.confidence)}</span>
-        {code.retrievalSimilarity !== null && (
-          <span>Similarity {formatSimilarity(code.retrievalSimilarity)}</span>
+      <div className="flex items-center justify-between">
+        <div className="flex gap-4 text-xs text-muted-foreground tabular-nums">
+          <span>Confidence {formatConfidence(code.confidence)}</span>
+          {code.retrievalSimilarity !== null && (
+            <span>Similarity {formatSimilarity(code.retrievalSimilarity)}</span>
+          )}
+        </div>
+        {code.status !== "HUMAN_CONFIRMED" && (
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => onConfirm(code.structure)}
+          >
+            Confirm
+          </Button>
         )}
       </div>
     </CardContent>

@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react';
 
 import { toast } from 'sonner';
-import { IncidentDetail, SimilarIncident } from '@praesid/shared';
+import {
+  IncidentDetail,
+  OiicsStructure,
+  SimilarIncident,
+} from '@praesid/shared';
 import {
   classifyIncident,
   fetchSimilarIncidents,
   getIncident,
+  updateCodeStatus,
 } from '@/lib/incidents';
 
 export const useIncidentDetail = (id: string) => {
@@ -39,6 +44,15 @@ export const useIncidentDetail = (id: string) => {
     };
   }, [id]);
 
+  const confirmCode = async (structure: OiicsStructure) => {
+    try {
+      setIncident(await updateCodeStatus(id, structure, 'HUMAN_CONFIRMED'));
+      toast.success('Code confirmed.');
+    } catch {
+      toast.error('Failed to confirm code.');
+    }
+  };
+
   const reclassify = async () => {
     if (isClassifying) return;
     setIsClassifying(true);
@@ -53,5 +67,12 @@ export const useIncidentDetail = (id: string) => {
     }
   };
 
-  return { incident, similar, isLoading, isClassifying, reclassify };
+  return {
+    incident,
+    similar,
+    isLoading,
+    isClassifying,
+    reclassify,
+    confirmCode,
+  };
 };
