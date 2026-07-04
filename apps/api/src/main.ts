@@ -1,3 +1,4 @@
+import './instrument';
 import { existsSync } from 'node:fs';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
