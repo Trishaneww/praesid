@@ -14,8 +14,8 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "oiics:ingest": "nest build && node dist/lib/oiics/ingestOiicsCodes.js",
-    "oiics:verify": "nest build && node dist/lib/oiics/verifyOiicsRetrieval.js",
+    "oiics:ingest": "nest build && node dist/internal/oiics-ingest/ingestOiicsCodes.js",
+    "oiics:verify": "nest build && node dist/internal/oiics-verify/verifyOiicsRetrieval.js",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -24,7 +24,6 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@aws-sdk/client-bedrock-runtime": "^3.1077.0",
     "@aws-sdk/client-s3": "^3.1077.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",

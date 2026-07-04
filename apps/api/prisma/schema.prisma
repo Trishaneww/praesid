@@ -1,0 +1,45 @@
+generator client {
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
+  moduleFormat    = "cjs"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  extensions = [vector]
+}
+
+enum OiicsStructure {
+  NATURE
+  PART_OF_BODY
+  EVENT
+  SOURCE
+  WORKER_ACTIVITY
+  LOCATION
+}
+
+model OiicsCode {
+  id                 String         @id @default(cuid())
+  structure          OiicsStructure
+  code               String         
+  version            String         // e.g. "3.02"
+  title              String
+  definition         String?
+  includes           String?
+  excludes           String?
+  codingInteractions String?
+  notes              String?
+  hierarchyRaw       String         // the raw "Hierarchy" cell: "1s", "2", "3"
+  hierarchyLevel     Int            // numeric part: 1, 2, 3, 4
+  isSummary          Boolean        @default(false) // rows whose hierarchy ends in "s"
+  parentCode         String?        // parent code within the same structure + version
+  isActive           Boolean        @default(true)
+  embeddingModel     String?        
+  embeddedText       String?        
+
+  embedding          Unsupported("vector(1024)")?
+
+  @@unique([structure, code, version])
+  @@index([structure, version, isActive])
+}
