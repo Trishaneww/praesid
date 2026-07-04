@@ -51,6 +51,22 @@ export class OiicsService {
     );
   }
 
+  async getCodeParents(
+    refs: { structure: OiicsStructure; code: string }[],
+  ): Promise<Record<string, string | null>> {
+    if (refs.length === 0) return {};
+    const rows = await this.prisma.oiicsCode.findMany({
+      where: {
+        version: CURRENT_OIICS_VERSION,
+        OR: refs.map((ref) => ({ structure: ref.structure, code: ref.code })),
+      },
+      select: { structure: true, code: true, parentCode: true },
+    });
+    return Object.fromEntries(
+      rows.map((row) => [`${row.structure}|${row.code}`, row.parentCode]),
+    );
+  }
+
   async searchCandidateCodes(narrative: string): Promise<OiicsSearchResponse> {
     const [narrativeVector] = await this.embeddingClient.embedText(
       [narrative],

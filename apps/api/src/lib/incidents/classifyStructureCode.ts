@@ -9,6 +9,12 @@ import { OIICS_STRUCTURE_LABELS } from '../../constants/oiics';
 import { OiicsClassificationCandidate } from '../../oiics/oiics.service';
 import { formatCandidatesForPrompt } from './formatCandidatesForPrompt';
 import { parseStructuredResponse } from './parseStructuredResponse';
+import {
+  addUsage,
+  EMPTY_USAGE,
+  TokenUsage,
+  usageFromMessage,
+} from './tokenUsage';
 
 export interface StructureClassification {
   code: string | null;
@@ -27,7 +33,11 @@ export const classifyStructureCode = async (
     candidates: OiicsClassificationCandidate[];
     rulesText: string;
   },
-): Promise<{ classification: StructureClassification; modelId: string }> => {
+): Promise<{
+  classification: StructureClassification;
+  modelId: string;
+  usage: TokenUsage;
+}> => {
   const { structure, narrative, candidates, rulesText } = params;
   const candidateCodes = new Set(candidates.map((candidate) => candidate.code));
   const label = OIICS_STRUCTURE_LABELS[structure];
@@ -44,6 +54,7 @@ export const classifyStructureCode = async (
 
   let last: StructureClassification | null = null;
   let modelId = CLASSIFIER_MODEL_ID;
+  let usage = EMPTY_USAGE;
 
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
     const messages: Anthropic.MessageParam[] = [
@@ -69,19 +80,23 @@ export const classifyStructureCode = async (
       messages,
     });
     modelId = message.model;
+    usage = addUsage(usage, usageFromMessage(message));
     last = parseStructuredResponse<StructureClassification>(message);
 
     if (last.code === null || candidateCodes.has(last.code)) {
-      return { classification: last, modelId };
+      return { classification: last, modelId, usage };
     }
   }
 
+  const resolved = last as StructureClassification;
   return {
     classification: {
-      ...(last as StructureClassification),
-      code: null,
-      confidence: Math.min((last as StructureClassification).confidence, 0.3),
+      code: candidates[0].code,
+      confidence: Math.min(resolved.confidence, 0.4),
+      rationale: `${resolved.rationale} [fell back to the nearest retrieved candidate; the model's chosen code was not in the candidate list]`,
+      alternativesConsidered: resolved.alternativesConsidered,
     },
     modelId,
+    usage,
   };
 };

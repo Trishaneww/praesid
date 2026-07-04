@@ -6,11 +6,15 @@ import {
   DECOMPOSE_SYSTEM_PROMPT,
 } from '../../constants/classification';
 import { parseStructuredResponse } from './parseStructuredResponse';
+import { TokenUsage, usageFromMessage } from './tokenUsage';
 
 export const decomposeIncidentNarrative = async (
   anthropic: Anthropic,
   narrative: string,
-): Promise<Record<OiicsStructure, string | null>> => {
+): Promise<{
+  phrases: Record<OiicsStructure, string | null>;
+  usage: TokenUsage;
+}> => {
   const message = await anthropic.messages.create({
     model: CLASSIFIER_MODEL_ID,
     max_tokens: 1024,
@@ -20,5 +24,9 @@ export const decomposeIncidentNarrative = async (
     },
     messages: [{ role: 'user', content: narrative }],
   });
-  return parseStructuredResponse(message);
+  return {
+    phrases:
+      parseStructuredResponse<Record<OiicsStructure, string | null>>(message),
+    usage: usageFromMessage(message),
+  };
 };
