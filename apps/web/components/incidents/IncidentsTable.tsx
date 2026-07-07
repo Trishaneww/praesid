@@ -22,11 +22,11 @@ export const IncidentsTable = ({
   onSelect,
 }: IncidentsTableProps) => (
   <Table>
-    <TableHeader>
-      <TableRow>
-        <TableHead className="w-28">Date</TableHead>
+    <TableHeader className="bg-muted/40">
+      <TableRow className="hover:bg-transparent">
+        <TableHead className="w-28 pl-4">Date</TableHead>
         <TableHead>Narrative</TableHead>
-        <TableHead className="w-48">Codes</TableHead>
+        <TableHead className="w-48 pr-4">Codes</TableHead>
       </TableRow>
     </TableHeader>
     <TableBody>
@@ -50,13 +50,13 @@ export const IncidentsTable = ({
           onClick={() => onSelect(incident.id)}
           className="cursor-pointer"
         >
-          <TableCell className="text-muted-foreground tabular-nums">
+          <TableCell className="pl-4 text-muted-foreground tabular-nums">
             {formatIncidentDate(incident.createdAt)}
           </TableCell>
-          <TableCell className="max-w-md truncate">
+          <TableCell className="max-w-md truncate font-medium">
             {incident.narrative}
           </TableCell>
-          <TableCell>
+          <TableCell className="pr-4">
             {incident.codeCount === 0 ? (
               <Badge variant="muted">Unclassified</Badge>
             ) : (

@@ -51,6 +51,17 @@ export const updateCodeStatus = (
     body: JSON.stringify({ status }),
   }).then(readJson);
 
+export const filterIncidents = (
+  incidents: IncidentSummary[],
+  query: string,
+): IncidentSummary[] => {
+  const trimmed = query.trim().toLowerCase();
+  if (!trimmed) return incidents;
+  return incidents.filter((incident) =>
+    incident.narrative.toLowerCase().includes(trimmed),
+  );
+};
+
 export const formatIncidentDate = (iso: string | null): string =>
   iso
     ? new Date(iso).toLocaleDateString(undefined, {

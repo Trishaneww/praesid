@@ -16,7 +16,8 @@ import {
 // Hooks
 import { useIncidentDetail } from '@/hooks/useIncidentDetail';
 
-// Components
+// Layout + components
+import { AppTopbar } from '@/components/layout/AppTopbar';
 import { IncidentCodeCard } from '@/components/incidents/IncidentCodeCard';
 import { SimilarIncidentsPanel } from '@/components/incidents/SimilarIncidentsPanel';
 
@@ -30,15 +31,23 @@ export default function IncidentDetailPage() {
     useIncidentDetail(params.id);
 
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 p-8">
-      <Link
-        href="/dashboard"
-        className="text-sm text-muted-foreground hover:text-foreground"
-      >
-        ← Incidents
-      </Link>
+    <>
+      <AppTopbar
+        title="Incident detail"
+        section="Incidents"
+        actions={
+          <Button
+            variant="outline"
+            nativeButton={false}
+            render={<Link href="/dashboard" />}
+          >
+            ← Back
+          </Button>
+        }
+      />
 
-      {isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
+      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 p-6">
+        {isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
 
       {!isLoading && !incident && (
         <p className="text-sm text-muted-foreground">Incident not found.</p>
@@ -90,8 +99,9 @@ export default function IncidentDetailPage() {
             similar={similar}
             onSelect={(id) => router.push(`/dashboard/incidents/${id}`)}
           />
-        </>
-      )}
-    </main>
+          </>
+        )}
+      </main>
+    </>
   );
 }
