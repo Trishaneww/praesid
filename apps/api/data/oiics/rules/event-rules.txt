@@ -1,0 +1,29 @@
+EVENT OR EXPOSURE
+Event or exposure describes the type of harmful incident or exposure responsible for inflicting the injury or illness. This code should be determined before attempting to code Source and Secondary Source. Event or exposure codes are presented in a numeric order of precedence to aid in selection.
+The Event or exposure divisions are ordered as follows:
+Division 1 -  Violent acts by self or other person
+Division 2 -  Transportation incidents
+Division 3 -  Explosions and fires
+Division 4 -  Falls, slips, trips
+Division 5 -  Exposure to harmful substances or environments
+Division 6 -  Contact incidents
+Division 7 -  Overexertion and bodily reaction
+Division 9 -  Nonclassifiable
+RULES OF SELECTION
+1. Select the code that best describes the harmful incident or exposure. When more than one type of Event or exposure occurred (e.g., exposure to electricity and fall to lower level), follow the guidance below:
+2. Multiple Events or exposures:
+a)     First, eliminate any potential events that do not meet the following criteria:
+1) Initiated the chain of events that ultimately caused the injury (i.e., the preventable hazard), OR
+2) Directly produced the injury or illness reflected in the coded "Nature of injury or illness"
+Example 1: A worker is struck by a moving machine arm and falls to the ground. He suffered a concussion from the contact with machinery.
+Event 659 - Struck by running powered equipment— n.e.c.
+Here, a worker experienced contact with powered equipment and a fall on the same level. The fall to same level was neither the first to occur nor did it produce significant injuries, so it should not be considered as a potential event.
+b)     If more than one potential Event or exposure meets the above criteria, then select the Event code that appears first in the numeric order of precedence in which the codes are listed.
+Example 2: A mason was on a ladder when he came in contact with power lines. He received an electric shock and fell 4 feet from the ladder. He suffered a second degree electrical burns and a concussion from the fall.
+Nature 1841 - Injuries to the brain, spinal cord and burns
+Event 4121 - Fall to lower level resulting from exposure or contact— less than 6 feet
+In this incident, there were two possible events: 41 - Falls to lower level and 51 - Exposure to electricity. This type of situation is covered by combination event codes in group 412* - Falls to lower level resulting from exposure or contact, which comes first in the numeric order of precedence. The Nature of injury should reflect any significant injuries received from both the fall and exposure events.
+Example 3: A clerk was taking garbage out to the dumpster behind a store when an unknown assailant threatened her. She started to run and tripped over debris and fell. She received contusions and lacerations due to the fall, but was physically unharmed by the assailant.
+Nature 138 - Multiple surface and flesh wounds
+Event 117 - Threat, harassment by other person
+The two possible Events are '117 - Violence by other person' or '4312 - Fall on same level due to slip or trip'. Although injuries did not result directly from the actions of the assailant, the fall was ultimately precipitated by the violent threat. Therefore, we would code the violent act as the event or exposure since it comes first in the numeric order of precedence.

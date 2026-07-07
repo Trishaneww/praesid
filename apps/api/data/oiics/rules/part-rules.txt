@@ -1,0 +1,34 @@
+PART OF BODY
+Part of body identifies the part of the body directly affected by the previously identified Nature of injury or illness. Code Nature first, then Part of body based on the Nature of injury selected.
+The Part divisions are ordered as follows:
+Division 1 - Head
+Division 2 - Neck
+Division 3 - Trunk
+Division 4 - Upper extremities
+Division 5 - Lower extremities
+Division 6 - Body Systems
+Division 8 - Multiple body parts
+RULES OF SELECTION
+1. Name the part of body that is affected by the selected Nature of Injury or Illness code. Select the code that reflects the highest level of detail supported by the case information.
+2. Internal versus external part
+a)     Traumatic injuries and disorders (Nature Divisions 1* and 5*)
+1)     For traumatic injuries and exposures that affect the exterior body, or musculoskeletal structures of the body (bones, muscles, connective tissues), code the external part of body.
+Example 1: For lumbar sprain, choose Part 322 - Back— lumbar region.
+2)     When an injury or exposure affects an internal organ or major blood vessel, code to the specific organ(s) or structure(s) if known. If unknown, select an unspecified code.
+Example 2: For intracranial Injuries, choose Part 111 - Brain.
+b)     Illnesses, diseases, and disorders of body systems (Nature Divisions 2*-4*)
+When illness or disorder affects only one organ or is limited to a subgroup of organs of the trunk (designated at the 3-digit level), code to that specific organ or subgroup.
+Example 3: for chronic obstructive pulmonary disease (COPD), select Part 3128 - Multiple respiratory organs
+c)     Systemic reactions to exposure
+Select Part 6 - Body systems, in conjunction with the following Nature codes:
+1)     Traumatic injury Nature groups 16* and 17*, except where the nature of the condition is limited to the skin, nose, or ears.
+2)     Nature Divisions 2*-3* when multiple body systems are affected or the physical origin of illness cannot be determined.
+d)     Conditions affecting the skin: Select the external body part(s) affected.
+3. Natures affecting multiple body parts
+a)     Use multiple part codes when the Nature of injury or illness corresponds to two or more Parts of the body that are not captured in a single part code. Selection of a multiple part code is the same for one nature affecting multiple different parts or multiple natures each affecting a different part.
+1)     Multiple part codes can be found within each coding group and some subgroups and end in “8”.
+2)      Multiple part of body combinations that span more than one division are coded in Part Division 8*.
+4. Do NOT select a multiple Part of body code if:
+a)    There are multiple types of injuries or illnesses to the same part
+b)    The injury or illness affects the right and left of the same part within either of the upper or lower extremities divisions, or the trunk region.  Select the single code to represent injuries to the left and right sides.
+Example 4: An injury to right and left thumbs is coded to Part 4422 - Thumb(s).

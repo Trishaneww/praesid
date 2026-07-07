@@ -4,6 +4,8 @@ packages:
 allowBuilds:
   '@prisma/client': true
   '@prisma/engines': true
+  bcrypt: true
+  msgpackr-extract: false
   prisma: true
   sharp: true
   unrs-resolver: true

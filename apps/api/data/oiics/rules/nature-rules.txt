@@ -1,0 +1,56 @@
+NATURE OF INJURY OR ILLNESS
+Nature of injury or illness describes the physical characteristics the trauma or exposure on the body.
+The Nature divisions are ordered as follows:
+Division 1 -  Traumatic Injuries and disorders
+Division 2 -  Diseases and disorders of body systems
+Division 3 -  Infectious diseases
+Division 4 -  Neoplasms, tumors, and cancers
+Division 5 -  Symptoms, signs, and ill-defined conditions
+Division 6 -  Other diseases, conditions, and disorders
+RULES OF SELECTION
+1. If a single injury or illness is named on the source document(s) then select the code that reflects the highest level of detail supported by the case information. | [object Object]
+2. Unspecified or non-specific injuries and conditions: | 2. Unspecified or non-specific injuries and conditions:
+a)      If an injury is due to a known, work-related traumatic event or exposure, but the exact nature of the injury is unknown, select the most detailed code possible according to available case information. If there is insufficient detail to classify nature into any of the 2-digit traumatic injury groups (Natures 11*-17*), select a code from Nature 10* - Unspecified or nonspecific traumatic injuries. | [object Object]
+b)       If no single or repetitive traumatic work event or exposure can be identified and the condition is not a sequela, select Nature 5* - Symptoms, signs, and ill-defined conditions | [object Object]
+3. Multiple Injuries and conditions: | [object Object]
+a)     If the Event or exposure produces more than one type of injury or illness of approximately equal severity, select the appropriate multiple Nature code if available. Otherwise, refer to guidance to select the more severe injury or illness. | [object Object]
+1)   Multiple nature codes can be found within each coding group and some subgroups and end in “8”. | 1)   Multiple nature codes can be found within each coding group and some subgroups and end in “8”.
+2)   Multiple injuries that span more than one code group are coded in Nature 18* -  Multiple traumatic injuries and disorders. | [object Object]
+3)   Multiple injuries and illnesses that span more than one division are coded in Nature Division 8* - Multiple diseases, conditions, and disorders. | [object Object]
+4. Do NOT select a multiple Nature code if: | 4. Do NOT select a multiple Nature code if:
+a)       One type of injury affects multiple body parts: Select a single nature. The multiple physical locations of the injury or illness is reflected in the selection of a multiple Part of Body code. | [object Object]
+Example 1: A worker fractures her wrist and her tibia. | [object Object]
+Nature 124 - Fractures | Nature 124 - Fractures
+Part 849 - Upper and lower extremities— n.e.c. | Part 849 - Upper and lower extremities— n.e.c.
+b)     One injury is work-related injury or exposure and the other is a pre-existing condition: If a pre-existing condition (injury or illness) is aggravated by a work-related event, code the most severe manifestation of the condition that can be determined. Select Secondary source from 561* - Bodily conditions of injured, ill worker to indicate the worker's underlying pre-existing condition. | [object Object]
+Example 2: A worker with epilepsy is exposed to strobing lights, causing a seizure. | [object Object]
+Nature 2231 - Seizures, seizure disorder | Nature 2231 - Seizures, seizure disorder
+Part 6 - Body systems | Part 6 - Body systems
+Event 5221 -  Exposure to light, other radiation— single episode or single shift | Event 5221 -  Exposure to light, other radiation— single episode or single shift
+Source 9459 - Light, radiation, noise— n.e.c. | Source 9459 - Light, radiation, noise— n.e.c.
+Secondary source 5613 - Neurological conditions of injured, ill worker | Secondary source 5613 - Neurological conditions of injured, ill worker
+c)      A superficial injury is a route of exposure for disease: When a single event or exposure simultaneously produces a superficial injury (e.g. needlestick injury, insect bite, or minor cut or scrape) and an exposure to an illness (Nature Divisions 2* and 3*), code the illness or exposure to illness if no symptoms have presented. | [object Object]
+Example 3: Needlestick produces a puncture wound and transmits serum hepatitis, choose Nature 3243 - Type C viral hepatitis. | [object Object]
+Example 4: A superficial scratch causes MRSA a infection, Choose 2813 - Methicillin-resistant staphylococcus aureus (MRSA) infection
+d)      A soft tissue injury results in a musculoskeletal disorder: If a single event produces a soft tissue injury (Nature 14*) or superficial injury  (Nature 13*) that directly results in a musculoskeletal disorder (Nature 27*), code the condition that is more severe. In most cases, this will be the musculoskeletal disorder. | [object Object]
+Example 5: Worker strains finger, resulting in stenosing tenosynovitis, choose Nature 2752 - Stenosing tenosynovitis | [object Object]
+e)         Code the initial injury over symptoms or conditions that fall under the following groups: | [object Object]
+1)    Secondary conditions: If one of the injuries or illnesses listed is a symptom of another and primary injury or illness and would disappear or be reduced if the primary injury or illness were treated, then code only the primary injury or illness. | [object Object]
+Example 6: blisters caused by thermal burns are secondary to the burns and would go away with treatment of the burns. Select thermal burns | [object Object]
+2)   Sequelae or medical complications: If one of the injuries or illnesses develops after the initial injury and is an aftereffect, complication due to medical treatment, or re-injury, then code only the initial injury. This excludes infections that are transmitted simultaneously with the initial injury. | [object Object]
+Example 7: A major muscle tear results in deep vein thrombosis. Deep vein thrombosis is a sequela of the tear. Select Nature 1441 - Major tears to muscles, ligaments. | [object Object]
+5. Musculoskeletal injuries and disorders | 5. Musculoskeletal injuries and disorders
+Musculoskeletal disorders are broadly defined as painful disorders of muscles, connective tissues , and nerves. These may be attributed to injuries, diseases, and degenerative conditions. The table below provides suggested categories of musculoskeletal disorders by exposure type for the purpose of ergonomic and safety interventions. | [object Object]
+1. Traumatic injuries of the musculoskeletal system 
+Nature 14* - Soft tissue injuries AND NOT
+Event Division 7* - Overexertion | Injuries causing acute disruption of soft tissues, resulting from a single incident of trauma, such as a car accident
+2. Acute overexertion Injuries resulting from a single incident 
+Nature 14* - Soft tissue injuries AND 
+Event 71* - Overexertion involving external object(s) 
+or Event 73* - Bodily position and motion | Injuries resulting from a single incident of strain or overexertion
+3. Repetitive strain injuries 
+Nature 14* - Soft tissue injuries or Nature strain injuries 
+Nature 27* - Musculoskeletal diseases and disorders AND 
+Event 72* - Repetitive microtasks | Injuries result from prolonged or repetitive exposure lasting more than a single shift but are of a relatively minor nature, and without a medical diagnosis as a disorder.
+4. Diseases and disorders of the musculoskeletal system 
+Nature 27* - Musculoskeletal diseases and disorders | These conditions typically result from work activities that involve prolonged exposure to repetitive tasks, exertion of force, or maintenance of awkward postures. They may also be sequelae of a traumatic injury.

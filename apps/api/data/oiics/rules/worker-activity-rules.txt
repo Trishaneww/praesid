@@ -1,0 +1,19 @@
+WORKER ACTIVITY
+Worker activity (WA) describes the work task or activity that the worker is doing at the time of harmful work incident. It provides context for the harmful incident as well as highlighting certain job tasks that are known to be hazardous.  Worker activity codes are presented in a numeric order of precedence to aid in selection. They are grouped into the following divisions:
+The Worker Activity divisions are ordered as follows:
+Division 1 - Emergency and security operations
+Division 2 - Agriculture, landscaping, and animal activities
+Division 3 - Heavy and industrial construction, production, and materials moving operations
+Division 4 - Other construction, production and maintenance activities
+Division 5 - Personal care, service, and administrative activities
+Division 6 - Miscellaneous activities
+Division 7 - Transportation operations
+Division 9 - Activity, not elsewhere classified
+WORKER ACTIVITY RULES OF SELECTION
+1. Select the activity that best describes the last known task or activity performed by the worker when the harmful incident occurred. Worker activity should be coded independently of Event or exposure and may reflect different case information.
+Example 1: A road construction worker was directing traffic when he was struck by a vehicle that intruded into the work zone.
+Here, the code that best describes the worker's actions at the time of the incident is WA 741 - Directing, flagging traffic
+2. Choosing between multiple Worker activities
+If multiple worker activities codes are applicable in a case, select the code that appears first in the numeric order of precedence.
+Example 2: A farmer was operating a tractor with a corn combine to harvest corn in a field. He leaned out the side of the tractor to inspect his machinery, causing him to fall to the ground and be run over by the tractor.
+Multiple codes apply to this situation. The farmer was harvesting corn, operating heavy mobile equipment, and inspecting equipment. Select the code that appears first in the order of precedence, which is code 222, Planting, harvesting, tending crops using heavy equipment

@@ -1,0 +1,30 @@
+LOCATION
+Location describes the principle characteristics of the geographic area or premises where the selected Event or exposure occurred.
+The Location divisions are ordered as follows:
+Division 1 - Construction or maintenance sites
+Division 2 - Farm, agricultural premises
+Division 3 - Industrial places and premises
+Division 4 - Residence, housing
+Division 5 - Limited access public buildings
+Division 6 - Business and communal areas
+Division 7 - Transportation infrastructure
+Division 9 - Other places
+LOCATION RULES OF SELECTION
+1. Select the Location code that best describes where the Event or exposure occurred. For locations with generic descriptions which could match several codes, NAICS codes may be used to determine which type of location is the best fit.
+Example 1: A "bakery" could be an industrial bakery, a retail shop that sells baked goods, or a dine-in cafe that serves baked goods. The NAICS code should be consulted to determine the industry of the establishment without more specific information.
+2. Choosing between multiple Locations
+a)     Independent commercial establishments within a larger public building or area.
+1)     If an event occurs within an establishment that is situated within a larger building or type of area, but is run independently of that larger premises, select the Location event that reflects the smaller, separate establishment.
+2)     Departments within a building or campus which are part of or affiliated with the larger establishment location should be coded as the larger establishment.
+Example 2: For an injury occurring within an independent restaurant housed inside an airport terminal, code the restaurant rather than the airport terminal.
+Example 3: For an injury occurring within the first floor cafeteria owned and operated by a hospital, code the hospital rather than the cafeteria.
+b)     Structures, infrastructure, and surrounding grounds and premises associated with a broader location
+1)     Construction sites, Utility and communications towers, loading docks, pipeline and sewer interiors, and parking lots should be coded to the specific location code regardless of broader types of building or premises which they occur on. If more than two of the above locations are applicable, select the code that appears first in the numeric order of precedence.
+2)     Unless specified in b) 1), areas that are part of or surrounding a broader premise should typically be coded to that broader location. These include surrounding grounds and property, dams, utility lines, sheds (except farm or industrial), sidewalks, footpaths, driveways, etc.
+i)     If a sidewalk or power line is connected to a building (e.g. a store or residential property) or part of building premises code to that type of building.
+ii)     If not in proximity to a building or common area, code sidewalks to type of road that the sidewalk (or electric line) borders.
+Example 4: An engineer is inspecting a dam on a river when he falls into the water below. Code the location as the river, not the dam. Note: the dam would be captured as the source.
+c)     Incidents spanning more than one location: select the location where the incident started
+Example 5: A vehicle is swept off a local roadway bridge by flood waters and ends up in a creek, where the worker drowns. Code the roadway rather than the creek.
+d)     After applying the above criteria, if there is still more than one applicable location code, select the code that appears first in the numeric order of the Location code structure.
+Example 6: For a worker injured in a warehouse that is part of a factory, select code 331, "Warehouses" since this code appears before factories in the numeric code order.
